@@ -3,8 +3,8 @@
 import axios from 'axios';
 
 // Remplacez 'URL ICI' par votre URL réelle
-const baseURL = 'https://donations.edu.netlor.fr';
-const apiKey = 'Oy)#WQ]$0<ba';
+const baseURL = 'https://timely.edu.netlor.fr';
+const apiKey = '$I5gr#hkqNyz';
 
 export default {
     install: function (app,options) {
