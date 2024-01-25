@@ -9,6 +9,9 @@ export const useStore = defineStore('main', {
     setApiKey(apiKey) {
       this.apiKey = apiKey;
     },
+    apiNotNull() {
+      return this.apiKey !== null;
+    }
   },
   persist: {
     enabled: true,
