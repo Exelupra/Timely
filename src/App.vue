@@ -41,7 +41,7 @@ export default {
       <div id="top">
       <img alt="Vue logo" class="logo" src="@/assets/logo3.svg" width="80vw" height="80vw" />
       <nav class="pack">
-        <RouterLink to="/">Acceuil <img alt="Vue logo" class="logo" src="@/assets/home.svg" width="40vw" height="40vw"/></RouterLink>
+        <RouterLink to="/acceuil">Acceuil <img alt="Vue logo" class="logo" src="@/assets/home.svg" width="40vw" height="40vw"/></RouterLink>
         <RouterLink v-if="apiKey !== 'null'" to="/project">Projet <img alt="Vue logo" class="logo" src="@/assets/param.svg" width="40vw" height="40vw"/></RouterLink>
         <RouterLink v-if="apiKey !== 'null'" to="/Activity">Activité <img alt="Vue logo" class="logo" src="@/assets/activity.svg" width="40vw" height="40vw"/></RouterLink>
         <RouterLink v-if="apiKey !== 'null'" to="/stats">Statistique <img alt="Vue logo" class="logo" src="@/assets/stat.svg" width="40vw" height="40vw"/></RouterLink>
