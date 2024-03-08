@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="logout-container">
     <h2>Déconnexion</h2>
     <p>{{ message }}</p>
-    <button @click="logout">Se déconnecter</button>
+    <button @click="logout" class="logout-button">Se déconnecter</button>
   </div>
 </template>
 
@@ -31,3 +31,24 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.logout-container {
+  text-align: center;
+}
+
+.logout-button {
+  background-color: red;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+.logout-button:hover {
+  background-color: darkred;
+}
+</style>

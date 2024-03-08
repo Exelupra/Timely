@@ -1,16 +1,14 @@
-
 <template>
-  <div>
+  <div class="connexion-container">
     <h2>Connexion</h2>
-    <form @submit.prevent="submitForm">
+    <form @submit.prevent="submitForm" class="connexion-form">
       <label for="apiKey">Clé API :</label>
-      <input type="text" id="apiKey" v-model="apiKey" required>
+      <input type="text" id="apiKey" v-model="apiKey" required class="form-input">
 
-      <button type="submit">Se connecter</button>
+      <button type="submit" class="submit-button">Se connecter</button>
     </form>
 
-
-    <div v-if="isLoggedIn">
+    <div v-if="isLoggedIn" class="success-message">
       <p>Connexion réussie. Redirection vers l'accueil...</p>
     </div>
   </div>
@@ -50,3 +48,49 @@ export default {
 };
 
 </script>
+
+<style scoped>
+.connexion-container {
+  text-align: center;
+}
+
+.connexion-form {
+  display: inline-block;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.submit-button {
+  background-color: red;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: darkred;
+}
+
+.success-message {
+  margin-top: 20px;
+}
+
+.error-message {
+  color: red;
+  margin-top: 20px;
+}
+</style>
