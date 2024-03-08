@@ -13,11 +13,12 @@ import { useTimeEntryStore } from '../store/timeEntry';
 				selectedEntry: {},
 				showActivityForm: false,
 				entryForm: false,
+				newEntryForm: false,
 
 				objectives:[],
 				objectiveName: '',
 				objectiveContent: '',
-				showObjectivesForm: false
+				showObjectivesForm: false,
 			}
 		},
 		mounted(){
@@ -54,16 +55,19 @@ import { useTimeEntryStore } from '../store/timeEntry';
 					};
 					useTimeEntryStore().setTimeEntry(te);
 				}
-
 				this.todayActivities.push(this.activity);
-
-				console.log(useTimeEntryStore().timeEntry);
+				alert("Activité commencée");
+				this.showActivityForm = false;
 			},
 			stopActivity(id) {
+				const te = useTimeEntryStore().timeEntry;
 				this.$api.post('/api/time-entries/' + id, {
+					activity_id: te.activity_id,
+					project_id: te.project_id,
+					start: te.start,
 					end: new Date()
 				}).then((response) => {
-					
+					alert("Activité terminée");
 				});
 			},
 			showForm() {
@@ -94,7 +98,7 @@ import { useTimeEntryStore } from '../store/timeEntry';
 					activity_id: act_id,
 					project_id: proj_id
 				}).then((response) => {
-					console.log(response.data);	
+					alert("Entrée créée avec succès");
 				});
 			},
 			updateEntry(id, start, end, act_id, proj_id) {
@@ -104,12 +108,12 @@ import { useTimeEntryStore } from '../store/timeEntry';
 					activity_id: act_id,
 					project_id: proj_id
 				}).then((response) => {
-					console.log(response.data);	
+					alert("Entrée modifiée avec succès");
 				});
 			},
 			deleteEntry(id) {
 				this.$api.delete('/api/time-entries/' + id).then((response) => {
-					console.log(response.data);	
+					alert("Entrée supprimée avec succès");
 				});
 			},
 			getEntries(id) {
@@ -130,6 +134,18 @@ import { useTimeEntryStore } from '../store/timeEntry';
 				});
 				this.showObjectivesForm = false;
 			},
+			toggleObjective(item){
+				if(item.done){
+					this.$api.patch('/api/daily-objectives/' + item.id + '/undone').then((response) => {
+						alert("Objectif relancé");
+					});
+				} else {
+					this.$api.patch('/api/daily-objectives/' + item.id + '/done').then((response) => {
+						alert("Objectif terminé");
+					});
+				}
+				item.done = !item.done;
+			}
 		}
 	}
 
@@ -161,6 +177,12 @@ import { useTimeEntryStore } from '../store/timeEntry';
 						<textarea></textarea>
 						<button @click="stopActivity(item.id)">Arrêter</button>
 					</div>
+					<button v-if="!newEntryForm" @click="newEntryForm=!newEntryForm">Créer une entrée</button>
+					<div class="formEntry" v-if="newEntryForm">
+						<input type="datetime-local" v-model="selectedEntry.start">
+						<input type="datetime-local" v-model="selectedEntry.end">
+						<button @click="createEntry(selectedEntry.start, selectedEntry.end, item.id, project.id)">Valider</button>
+					</div>
 					<div v-if="entries" v-for="entry in entries">
 						<p v-if="!entryForm">{{ entry.start }} - {{ entry.end }}</p>
 						<input v-if="entryForm" type="datetime-local" v-model="selectedEntry.start">
@@ -184,9 +206,9 @@ import { useTimeEntryStore } from '../store/timeEntry';
 			</div>
 			<div v-for="item in objectives" class="objectives">
 				<h3>{{ item.name }}</h3>
-				<p>{{ item.content }}</p>
-				<button v-if="!item.done">Terminer</button>
-				<button v-if="item.done">Relancer</button>
+				<p>{{ item.content ? item.content : "null" }}</p>
+				<button v-if="!item.done" @click="toggleObjective(item)">Terminer</button>
+				<button v-if="item.done" @click="toggleObjective(item)">Relancer</button>
 			</div>
 		</div>
 	</main>
