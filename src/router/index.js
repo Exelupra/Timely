@@ -7,11 +7,12 @@ import DeconnexionView from '../views/deconnexion.vue'
 import ActivityView from '../views/Activity.vue'
 import StatsView from '../views/Stats.vue'
 import Project from '@/views/Projet.vue'
+import acceuilView from '@/views/Acceuil.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path: '/broken',
       name: 'home',
       component: HomeView
     },
@@ -50,6 +51,11 @@ const router = createRouter({
       path: '/project',
       name: 'project',
       component: Project
+    },
+    {
+      path: '/',
+      name: 'acceuil',
+      component: acceuilView
     }
   ]
 })

@@ -28,7 +28,7 @@ export default {
     this.apiKey = this.apiKey.apiKey;
   },
   watch: {
-    $route(to, from) {
+    $route() {
       this.actualise();
     }
   }
