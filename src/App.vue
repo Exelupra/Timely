@@ -47,8 +47,9 @@ export default {
         <RouterLink v-if="apiKey !== 'null'" to="/stats">Statistique <img alt="Vue logo" class="logo" src="@/assets/stat.svg" width="40vw" height="40vw"/></RouterLink>
         <div v-if="apiKey === 'null'" id="espace"></div>
         <RouterLink v-if="apiKey !== 'null'" to="/profil">Profil <img alt="Vue logo" class="logo" src="@/assets/profil.svg" width="40vw" height="40vw"/></RouterLink>
-        <RouterLink v-if="apiKey !== 'null'" to="/deconnexion">Déconnection <img alt="Vue logo" class="logo" src="@/assets/logout.svg" width="40vw" height="40vw"/></RouterLink>
-        <RouterLink v-if="apiKey === 'null'" to="/Connexion">Connection <img alt="Vue logo" class="logo" src="@/assets/login.svg" width="40vw" height="40vw"/></RouterLink>
+        <RouterLink v-if="apiKey === 'null'" to="/inscription">Inscription <img alt="Vue logo" class="logo" src="@/assets/login.svg" width="40vw" height="40vw"/></RouterLink>
+        <RouterLink v-if="apiKey !== 'null'" to="/deconnexion">Déconnexion <img alt="Vue logo" class="logo" src="@/assets/logout.svg" width="40vw" height="40vw"/></RouterLink>
+        <RouterLink v-if="apiKey === 'null'" to="/Connexion">Connexion <img alt="Vue logo" class="logo" src="@/assets/login.svg" width="40vw" height="40vw"/></RouterLink>
       </nav>
       </div>
       <div id="bot">

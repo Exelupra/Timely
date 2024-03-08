@@ -78,6 +78,7 @@ import { useTimeEntryStore } from '../store/timeEntry';
 				this.selectedEntry = entry;
 			},
 			getActivities() {
+        this.activities = [];
 				if(this.project){
 					console.log(this.project);
 					this.$api.get('/api/time-entries').then((response) => {
