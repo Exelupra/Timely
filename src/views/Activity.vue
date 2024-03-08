@@ -81,5 +81,33 @@ export default{
 </template>
 
 <style scoped>
+.barre {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #cccccc;
+}
 
+.barre input[type="text"],
+.barre select {
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+}
+
+.barre button {
+  padding: 8px 15px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.barre button:hover {
+  background-color: darkred;
+}
 </style>
