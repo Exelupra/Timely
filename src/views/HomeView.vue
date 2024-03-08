@@ -12,7 +12,12 @@ import { useTimeEntryStore } from '../store/timeEntry';
 				project: {},
 				selectedEntry: {},
 				showActivityForm: false,
-				entryForm: false
+				entryForm: false,
+
+				objectives:[],
+				objectiveName: '',
+				objectiveContent: '',
+				showObjectivesForm: false
 			}
 		},
 		mounted(){
@@ -29,6 +34,14 @@ import { useTimeEntryStore } from '../store/timeEntry';
 					}
 				});
 			});
+
+			this.$api.get('/api/daily-objectives').then((response) => {
+				response.data.forEach((item) => {
+					if(!item.done||item.date == new Date().toISOString().slice(0, 10)){
+						this.objectives.push(item);
+					}
+				});
+			});
 		},
 		methods: {
 			startActivity() {
@@ -37,6 +50,7 @@ import { useTimeEntryStore } from '../store/timeEntry';
 						project_id: this.project.id,
 						activity_id: this.activity.id,
 						start: new Date(),
+						activity: this.activity
 					};
 					useTimeEntryStore().setTimeEntry(te);
 				}
@@ -107,6 +121,15 @@ import { useTimeEntryStore } from '../store/timeEntry';
 					});
 				});
 			},
+			createObjective() {
+				this.$api.post('/api/daily-objectives', {
+					name: this.objectiveName,
+					content: this.objectiveContent
+				}).then((response) => {
+					this.objectives.push(response.data);
+				});
+				this.showObjectivesForm = false;
+			},
 		}
 	}
 
@@ -150,10 +173,21 @@ import { useTimeEntryStore } from '../store/timeEntry';
 					</div>
 				</div>
 			</div>
-			<button @click="testApi">Test API</button>
 		</div>
 		<div id="objectif">
 			<h1>Objectif</h1>
+			<button @click="showObjectivesForm=!showObjectivesForm" v-if="!showObjectivesForm">Créer un objectif</button>
+			<div class="formObjectives" v-if="showObjectivesForm">
+				<input type="text" v-model="objectiveName" placeholder="Nom de l'objectif">
+				<textarea v-model="objectiveContent" placeholder="Contenu de l'objectif"></textarea>
+				<button @click="createObjective">Créer</button>
+			</div>
+			<div v-for="item in objectives" class="objectives">
+				<h3>{{ item.name }}</h3>
+				<p>{{ item.content }}</p>
+				<button v-if="!item.done">Terminer</button>
+				<button v-if="item.done">Relancer</button>
+			</div>
 		</div>
 	</main>
 </template>
