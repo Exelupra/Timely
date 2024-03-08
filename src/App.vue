@@ -4,35 +4,33 @@ import { RouterLink, RouterView } from 'vue-router'
 export default {
   data(){
     return {
-      connected: 'none',
-      disconnected: 'block'
+      apiKey: 'null',
+      status: false
     }
   },
   components: {
     RouterLink,
     RouterView
   },
-  methods:{
-    swap(){
-      if(this.connected == 'none'){
-        this.connected = 'block'
-        this.disconnected = 'none'
-      }else{
-        this.connected = 'none'
-        this.disconnected = 'block'
-      }
+  methods: {
+    swap() {
+      this.status = !this.status;
     },
-    check(){
-      this.$api.get('/api/profile').then((response)=>{
-        console.log(response.data);
-      }).catch((error)=>{
-        console.log(error);
-      }
-      )
-    }
+    actualise() {
+      this.apiKey = localStorage.getItem('main');
+      this.apiKey = JSON.parse(this.apiKey);
+      this.apiKey = this.apiKey.apiKey;
+    },
   },
-  onMounted(){
-    this.check();
+  mounted(){
+    this.apiKey = localStorage.getItem('main');
+    this.apiKey = JSON.parse(this.apiKey);
+    this.apiKey = this.apiKey.apiKey;
+  },
+  watch: {
+    $route(to, from) {
+      this.actualise();
+    }
   }
 }
 </script>
@@ -41,28 +39,27 @@ export default {
   <header>
     <div class="wrapper">
       <div id="top">
-      <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="100vw" height="100vw" />
-      <div id="barre connected" :style="{display:connected}">
+      <img alt="Vue logo" class="logo" src="@/assets/logo3.svg" width="80vw" height="80vw" />
       <nav class="pack">
-        <RouterLink to="/">Acceuil</RouterLink>
-        <RouterLink to="/">paramètre</RouterLink>
-        <RouterLink to="/">Activité</RouterLink>
-        <RouterLink to="/">Déconnexion</RouterLink>
+        <RouterLink to="/">Acceuil <img alt="Vue logo" class="logo" src="@/assets/home.svg" width="40vw" height="40vw"/></RouterLink>
+        <RouterLink v-if="apiKey !== 'null'" to="/project">Projet <img alt="Vue logo" class="logo" src="@/assets/param.svg" width="40vw" height="40vw"/></RouterLink>
+        <RouterLink v-if="apiKey !== 'null'" to="/Activity">Activité <img alt="Vue logo" class="logo" src="@/assets/activity.svg" width="40vw" height="40vw"/></RouterLink>
+        <RouterLink v-if="apiKey !== 'null'" to="/stats">Statistique <img alt="Vue logo" class="logo" src="@/assets/stat.svg" width="40vw" height="40vw"/></RouterLink>
+        <div v-if="apiKey === 'null'" id="espace"></div>
+        <RouterLink v-if="apiKey !== 'null'" to="/profil">Profil <img alt="Vue logo" class="logo" src="@/assets/profil.svg" width="40vw" height="40vw"/></RouterLink>
+        <RouterLink v-if="apiKey !== 'null'" to="/deconnexion">Déconnection <img alt="Vue logo" class="logo" src="@/assets/logout.svg" width="40vw" height="40vw"/></RouterLink>
+        <RouterLink v-if="apiKey === 'null'" to="/Connexion">Connection <img alt="Vue logo" class="logo" src="@/assets/login.svg" width="40vw" height="40vw"/></RouterLink>
       </nav>
       </div>
-      <div id="barre disconnected" :style="{display:disconnected}">
-        <nav class="pack">
-          <RouterLink to="/">Acceuil</RouterLink>
-          <RouterLink to="/" style="grid-column: 4">Connexion</RouterLink>
-        </nav>
-      </div>
-      </div>
       <div id="bot">
-        <p>En cours</p><p>Temps : 10:04:40</p><button @click="swap()">Pause</button>
+        <p>// En cours //</p>
+        <p>Temps : 10:04:40</p>
+        <img v-if="status" alt="Vue logo" class="logo" src="@/assets/pause.svg" width="40vw" height="40vw" @click="swap()"/>
+        <img v-if="!status" alt="Vue logo" class="logo" src="@/assets/play.svg" width="40vw" height="40vw" @click="swap()"/>
       </div>
     </div>
   </header>
-  <RouterView />
+  <RouterView/>
 </template>
 
 <style scoped>
@@ -70,61 +67,55 @@ header {
   background-color: black;
 }
 
-.pack{
-  display: grid;
-  grid-template-columns:repeat(4, 1fr);
-  grid-template-rows: 1fr;
+#top{
+  display: flex;
+}
+
+#bot{
+  display: flex;
+  background-color: red;
+  justify-content: center;
   align-items: center;
-  justify-items: center;
-  margin-left: 3vw;
-  height: 100%;
+  gap: 10px;
+  font-size:1.5em;
+  border: 2px solid orange;
+}
+
+#bot button{
+  font-size: 1.5em;
+}
+
+.pack{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
 }
 
 .pack a{
-  background-color: white;
-  display:block;
-  height:100%;
-  width:22vw;
-  padding-top:5%;
-  text-align: center;
+  color: black;
   text-decoration: none;
-  border: 3px solid white;
-  background-color:black;
-  border-radius: 10px;
-  font-size: 1.5vw;
-  font-weight: bold;
+  background-color: white;
+  border: 1px solid grey;
+  border-radius: 3px;
+  width:20%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5em;
+}
+
+#espace{
+  width: 80%;
 }
 
 .pack a:hover{
   background-color: grey;
-  color: black;
+  color: white;
 }
 
-.wrapper{
-  display:grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 0.5fr;
-}
-
-#bot{
-background-color:red;
-  align-items: center;
-  justify-items: center;
-  display:flex;
-
-}
-
-#bot p{
-  padding-top: 0.5%;
-  font-size: 1vw;
-  font-weight: bold;
-  color:white;
-  padding-left: 1%;
-}
-
-#top{
-  display:grid;
-  grid-template-columns: 5vw 1fr;
-  grid-template-rows: 1fr;
+.logo{
+  margin: 10px;
 }
 </style>
