@@ -23,6 +23,9 @@ export default {
     },
   },
   mounted(){
+    if(localStorage.getItem('main') === null) {
+      localStorage.setItem('main', JSON.stringify({apiKey: 'null'}));
+    }
     this.apiKey = localStorage.getItem('main');
     this.apiKey = JSON.parse(this.apiKey);
     this.apiKey = this.apiKey.apiKey;
